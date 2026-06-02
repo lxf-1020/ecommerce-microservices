@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: notification-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+    stream:
+      bindings:
+        orderNotification:
+          destination: order-events
+          group: notification-service-group
+      rabbit:
+        bindings:
+          orderNotification:
+            consumer:
+              acknowledgeMode: MANUAL
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/ecommerce_notification?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.ecommerce.notification.entity
+
+server:
+  port: 8006
+
+logging:
+  level:
+    root: INFO
+    com.ecommerce: DEBUG
