@@ -1,0 +1,68 @@
+spring:
+  application:
+    name: order-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/ecommerce_order?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.ecommerce.order.entity
+
+seata:
+  enabled: true
+  application-id: order-service
+  tx-service-group: default_tx_group
+  client:
+    rm:
+      async-commit-buffer-limit: 10000
+      report-retry-count: 5
+      report-success-enable: false
+      saga-branch-register-enable: false
+      saga-json-parser: fastjson
+      saga-retry-persist-mode-update: false
+      saga-retry-persist-mode-update: false
+      tcc-action-interceptor-order: -2147483648
+    tm:
+      commit-retry-count: 5
+      rollback-retry-count: 5
+      default-global-transaction-timeout: 60000
+      degrade-check: false
+      degrade-check-allow-degraded-transaction: true
+      degrade-check-period: 2000
+    undo:
+      data-source-proxy-mode: AT
+      log-deletion-period: 86400000
+      log-save-days: 7
+      log-table-name: undo_log
+      only-care-update-cols: true
+      rollback-info-compare-columns: ALL
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      namespace: ""
+      group: SEATA_GROUP
+      username: nacos
+      password: nacos
+
+server:
+  port: 8003
+
+logging:
+  level:
+    root: INFO
+    com.ecommerce: DEBUG
+    io.seata: DEBUG
